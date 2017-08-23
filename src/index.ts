@@ -45,14 +45,14 @@ async function executeCommandLine() {
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    page.goto(urls[0]);
-    const content = await page.evaluate(() => {
-        const element = document.getElementById(id);
+    await page.goto(urls[0]);
+    const content = await page.evaluate(containerId => {
+        const element = document.getElementById(containerId);
         if (element) {
             return element.innerHTML;
         }
         return "";
-    });
+    }, id);
 
     fs.writeFileSync(out, content);
 

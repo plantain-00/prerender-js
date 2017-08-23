@@ -1,6 +1,6 @@
 {
   "name": "prerender-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool to prerender a page and save html element by id to a file.",
   "main": "index.js",
   "scripts": {

@@ -10,6 +10,6 @@ declare module "puppeteer" {
     }
     export class Page {
         goto(url: string): Promise<void>;
-        evaluate(pageFunction: () => string): Promise<string>;
+        evaluate(pageFunction: (...parameters: any[]) => string, ...parameters: any[]): Promise<string>;
     }
 }
