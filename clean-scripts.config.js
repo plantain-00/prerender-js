@@ -13,7 +13,6 @@ module.exports = {
   test: [
     'tsc -p spec',
     'jasmine',
-    `node dist/index.js --supressError > spec/result.txt`,
     () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {
         if (error) {
