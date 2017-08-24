@@ -1,7 +1,6 @@
 import * as minimist from "minimist";
-import * as puppeteer from "puppeteer";
-import * as fs from "fs";
 import * as packageJson from "../package.json";
+import { prerender } from "./core";
 
 let suppressError = false;
 
@@ -33,9 +32,13 @@ async function executeCommandLine() {
         throw new Error("Need only 1 url");
     }
 
-    const id: string = argv.id;
-    if (!id || typeof id !== "string") {
-        throw new Error("Need `--id`");
+    let selector: string = argv.selector;
+    if (!selector || typeof selector !== "string") {
+        const id: string = argv.id;
+        if (!id || typeof id !== "string") {
+            throw new Error("Need `--selector`");
+        }
+        selector = `#${id}`;
     }
 
     const out: string = argv.o;
@@ -43,20 +46,12 @@ async function executeCommandLine() {
         throw new Error("Need `-o`");
     }
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(urls[0]);
-    const content = await page.evaluate(containerId => {
-        const element = document.getElementById(containerId);
-        if (element) {
-            return element.innerHTML;
-        }
-        return "";
-    }, id);
+    const timeout: number = argv.timeout === undefined ? 0 : +argv.timeout;
+    if (isNaN(timeout) || timeout < 0) {
+        throw new Error("Invalid `timeout`");
+    }
 
-    fs.writeFileSync(out, content);
-
-    browser.close();
+    await prerender(urls[0], selector, out, timeout);
 }
 
 executeCommandLine().then(() => {

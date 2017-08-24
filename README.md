@@ -6,7 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/prerender-js.svg)](https://www.npmjs.com/package/prerender-js)
 
 # prerender-js
-A CLI tool to prerender a page and save html element by id to a file.
+A CLI tool to prerender a page and save a html element to a file.
 
 #### install
 
@@ -14,4 +14,16 @@ A CLI tool to prerender a page and save html element by id to a file.
 
 #### usage
 
-run `prerender-js "http://example.com" --id test -o test.html`
+run `prerender-js "http://example.com" --selector "#test" -o test.html`
+
+#### optional
+
++ `--timeout 5000`: milliseconds for data loading
+
+#### nodejs usage
+
+```ts
+import { prerender } from "prerender-js";
+
+prerender("http://example.com", "#test", "test.html");
+```
